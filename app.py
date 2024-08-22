@@ -1,11 +1,12 @@
 from flask import Flask
+import json
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    return "Hello, IDX!"
+    return json.dumps({'message': 'Hello World'})
 
 
 if __name__ == "__main__":
