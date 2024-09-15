@@ -166,4 +166,5 @@ cython_debug/
 __pycache__
 .idx
 devserver.sh
+secret.py
 >>>>>>> 443bbcb (base)
