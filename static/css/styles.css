@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #222;
+    align-items: center;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.profile span {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.points {
+    display: flex;
+    align-items: center;
+}
+
+.points span {
+    margin-right: 5px;
+}
+
+.points img {
+    width: 20px;
+    height: 20px;
+}
+
+.level {
+    display: flex;
+    align-items: center;
+}
+
+.level span {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+progress {
+    width: 100px;
+    height: 10px;
+}
+
+.task-menu {
+    background-color: #444;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.task-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-menu ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.task-menu ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.task-list {
+    padding: 20px;
+}
+
+.task-item {
+    background-color: #555;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.task-due {
+    background-color: #2196F3;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+}
+
+.task-icon img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.task-info h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.task-details {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.task-details span {
+    margin-right: 5px;
+}
+
+.task-details img {
+    width: 15px;
+    height: 15px;
+}

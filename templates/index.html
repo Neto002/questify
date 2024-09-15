@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Início - Questify{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Questify - Gamifique suas Tarefas!</h1>
+<div class="row mt-4">
+    <!-- To Do Column -->
+    <div class="col-md-4">
+        <div class="board-column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h4>Para Fazer</h4>
+            <div class="task-card" id="task1" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">Criar Wireframe</div>
+                <div class="task-points">XP: 50</div>
+            </div>
+            <div class="task-card" id="task2" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">Desenhar Layout</div>
+                <div class="task-points">XP: 30</div>
+            </div>
+        </div>
+    </div>
+    <!-- In Progress Column -->
+    <div class="col-md-4">
+        <div class="board-column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h4>Em Progresso</h4>
+            <div class="task-card" id="task3" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">Desenvolver Backend</div>
+                <div class="task-points">XP: 100</div>
+            </div>
+        </div>
+    </div>
+    <!-- Done Column -->
+    <div class="col-md-4">
+        <div class="board-column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h4>Concluído</h4>
+            <div class="task-card" id="task4" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">Configurar Ambiente</div>
+                <div class="task-points">XP: 20</div>
+            </div>
+            <div class="task-card" id="task5" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">Esboçar Ideias</div>
+                <div class="task-points">XP: 10</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
