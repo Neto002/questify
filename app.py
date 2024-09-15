@@ -1,8 +1,14 @@
 import os
-
 from flask import Flask, send_file, render_template
+from flask_sqlalchemy import SQLAlchemy
+from secret import postgreURL
 
 app = Flask(__name__)
+app.config.from_object('config.Config')
+db = SQLAlchemy(app)
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def index():
