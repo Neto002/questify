@@ -1,7 +1,6 @@
 import os
 from flask import Flask, send_file, render_template
 from flask_sqlalchemy import SQLAlchemy
-from secret import postgreURL
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -12,7 +11,7 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", todo=[["Tarefa 1",50],["Tarefa 2",30]])
 
 @app.route("/missions")
 def missions():
