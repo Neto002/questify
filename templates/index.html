@@ -17,6 +17,12 @@
                 <div class="task-title">Desenhar Layout</div>
                 <div class="task-points">XP: 30</div>
             </div>
+            {% for task in todo %}
+            <div class="task-card" id="task2" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">{{ task[0] }}</div>
+                <div class="task-points">XP: {{ task[1] }}</div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     <!-- In Progress Column -->
