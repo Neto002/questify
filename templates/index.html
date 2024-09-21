@@ -7,45 +7,66 @@
 <div class="row mt-4">
     <!-- To Do Column -->
     <div class="col-md-4">
-        <div class="board-column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <h4>Para Fazer</h4>
-            <div class="task-card" id="task1" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">Criar Wireframe</div>
-                <div class="task-points">XP: 50</div>
+        <div class="board-column" id="todo">
+            <h4>Projetos</h4>
+            <div class="task-card" id="task1">
+                <div class="task-title">Questify Front</div>
+                <div class="task-points">Tarefas: 2</div>
             </div>
-            <div class="task-card" id="task2" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">Desenhar Layout</div>
-                <div class="task-points">XP: 30</div>
+            <div class="task-card" id="task2">
+                <div class="task-title">Questify Back</div>
+                <div class="task-points">Tarefas: 2</div>
             </div>
+        </div>
+    </div>
+    <!-- In Progress Column -->
+    <div class="col-md-4">
+        <div class="board-column" id="inprogress">
+            <h4>Tarefas</h4>
             {% for task in todo %}
-            <div class="task-card" id="task2" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">{{ task[0] }}</div>
+            <div class="task-card" id="task2">
+                <div class="task-title">{{ task[0] }} | {{ task[2] }}</div>
                 <div class="task-points">XP: {{ task[1] }}</div>
             </div>
             {% endfor %}
         </div>
     </div>
-    <!-- In Progress Column -->
-    <div class="col-md-4">
-        <div class="board-column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <h4>Em Progresso</h4>
-            <div class="task-card" id="task3" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">Desenvolver Backend</div>
-                <div class="task-points">XP: 100</div>
-            </div>
-        </div>
-    </div>
     <!-- Done Column -->
     <div class="col-md-4">
-        <div class="board-column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <h4>Concluído</h4>
-            <div class="task-card" id="task4" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">Configurar Ambiente</div>
-                <div class="task-points">XP: 20</div>
+        <div class="board-column" id="done">
+            <h4>Ranking</h4>
+            <div class="task-card d-flex align-items-center" id="rank1">
+                <!-- Avatar do usuário -->
+                <img src="{{ url_for('static', filename='images/avatars/' + 'user1.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-1').style.display='inline';">
+                <!-- Ícone genérico se o avatar não for encontrado -->
+                <i id="avatar-icon-1" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                <div class="ml-5">
+                    <div class="task-title">User 1</div>
+                    <div class="task-points">XP: 50</div>
+                </div>
             </div>
-            <div class="task-card" id="task5" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">Esboçar Ideias</div>
-                <div class="task-points">XP: 10</div>
+            <div class="task-card d-flex align-items-center" id="rank2">
+                <!-- Avatar do usuário -->
+                <img src="{{ url_for('static', filename='images/avatars/' + 'user2.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-2').style.display='inline';">
+                <!-- Ícone genérico se o avatar não for encontrado -->
+                <i id="avatar-icon-2" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                <div class="ml-5">
+                    <div class="task-title">User 2</div>
+                    <div class="task-points">XP: 50</div>
+                </div>
+            </div>
+            <div class="task-card d-flex align-items-center" id="rank3">
+                <!-- Avatar do usuário -->
+                <img src="{{ url_for('static', filename='images/avatars/' + 'user3.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-3').style.display='inline';">
+                <!-- Ícone genérico se o avatar não for encontrado -->
+                <i id="avatar-icon-3" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                <div class="ml-5">
+                    <div class="task-title">User 3</div>
+                    <div class="task-points">XP: 50</div>
+                </div>
             </div>
         </div>
     </div>

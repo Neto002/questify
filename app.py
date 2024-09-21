@@ -11,7 +11,7 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return render_template("index.html", todo=[["Tarefa 1",50],["Tarefa 2",30]])
+    return render_template("index.html", todo=[["Tarefa 1",50,"Questify Front"],["Tarefa 2",30,"Questify Front"],["Tarefa 3",50,"Questify Back"],["Tarefa 4",30,"Questify Back"]])
 
 @app.route("/missions")
 def missions():
