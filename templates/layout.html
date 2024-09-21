@@ -290,6 +290,29 @@
             border-color: #999; /* Borda mais clara no foco */
             box-shadow: none;
         }
+
+        /* Estilo do botão de edição */
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Estilo do botão de edição no modo escuro */
+        .dark-mode .btn-outline-secondary {
+            border-color: #f8f9fa;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
     </style>
 </head>
 <body class="dark-mode"> <!-- Modo escuro ativado por padrão -->

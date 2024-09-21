@@ -55,3 +55,42 @@ function drop(event) {
         event.target.parentElement.appendChild(task);
     }
 }
+
+// Função para abrir o modal de edição de projetos
+function editProject(projectName, taskCount) {
+    // Preencher os campos do modal
+    document.getElementById('editProjectName').value = projectName;
+    document.getElementById('editProjectTasks').value = taskCount;
+
+    // Exibir o modal de edição de projetos
+    var projectModal = new bootstrap.Modal(document.getElementById('editProjectModal'));
+    projectModal.show();
+
+    // Adicionar lógica de exclusão de projeto
+    document.getElementById('deleteProjectButton').onclick = function () {
+        if (confirm(`Deseja realmente excluir o projeto "${projectName}"?`)) {
+            // Lógica de exclusão do projeto
+            console.log(`Projeto "${projectName}" excluído`);
+        }
+    };
+}
+
+// Função para abrir o modal de edição de tarefas
+function editTask(taskName, taskXp, taskProject) {
+    // Preencher os campos do modal
+    document.getElementById('editTaskName').value = taskName;
+    document.getElementById('editTaskXp').value = taskXp;
+    document.getElementById('editTaskProject').value = taskProject;
+
+    // Exibir o modal de edição de tarefas
+    var taskModal = new bootstrap.Modal(document.getElementById('editTaskModal'));
+    taskModal.show();
+
+    // Adicionar lógica de exclusão de tarefa
+    document.getElementById('deleteTaskButton').onclick = function () {
+        if (confirm(`Deseja realmente excluir a tarefa "${taskName}"?`)) {
+            // Lógica de exclusão da tarefa
+            console.log(`Tarefa "${taskName}" excluída`);
+        }
+    };
+}
