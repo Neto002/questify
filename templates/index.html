@@ -3,72 +3,155 @@
 {% block title %}Início - Questify{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Questify - Gamifique suas Tarefas!</h1>
-<div class="row mt-4">
-    <!-- To Do Column -->
-    <div class="col-md-4">
-        <div class="board-column" id="todo">
-            <h4>Projetos</h4>
-            <div class="task-card" id="task1">
-                <div class="task-title">Questify Front</div>
-                <div class="task-points">Tarefas: 2</div>
-            </div>
-            <div class="task-card" id="task2">
-                <div class="task-title">Questify Back</div>
-                <div class="task-points">Tarefas: 2</div>
-            </div>
-        </div>
-    </div>
-    <!-- In Progress Column -->
-    <div class="col-md-4">
-        <div class="board-column" id="inprogress">
-            <h4>Tarefas</h4>
-            {% for task in todo %}
-            <div class="task-card" id="task2">
-                <div class="task-title">{{ task[0] }} | {{ task[2] }}</div>
-                <div class="task-points">XP: {{ task[1] }}</div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    <!-- Done Column -->
-    <div class="col-md-4">
-        <div class="board-column" id="done">
-            <h4>Ranking</h4>
-            <div class="task-card d-flex align-items-center" id="rank1">
-                <!-- Avatar do usuário -->
-                <img src="{{ url_for('static', filename='images/avatars/' + 'user1.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-1').style.display='inline';">
-                <!-- Ícone genérico se o avatar não for encontrado -->
-                <i id="avatar-icon-1" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
-
-                <div class="ml-5">
-                    <div class="task-title">User 1</div>
-                    <div class="task-points">XP: 50</div>
+    <h1 class="text-center">Questify - Gamifique suas Tarefas!</h1>
+    <div class="row mt-4">
+        <!-- To Do Column -->
+        <div class="col-md-4">
+            <div class="board-column" id="todo">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mt-2">Projetos</h4>
+                    <button class="btn btn-sm d-flex align-items-center justify-content-center btn-add" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <i class="fas fa-plus"></i>
+                    </button>
                 </div>
-            </div>
-            <div class="task-card d-flex align-items-center" id="rank2">
-                <!-- Avatar do usuário -->
-                <img src="{{ url_for('static', filename='images/avatars/' + 'user2.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-2').style.display='inline';">
-                <!-- Ícone genérico se o avatar não for encontrado -->
-                <i id="avatar-icon-2" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
-
-                <div class="ml-5">
-                    <div class="task-title">User 2</div>
-                    <div class="task-points">XP: 50</div>
+                <div class="task-card" id="task1">
+                    <div class="task-title">Questify Front</div>
+                    <div class="task-points">Tarefas: 2</div>
                 </div>
-            </div>
-            <div class="task-card d-flex align-items-center" id="rank3">
-                <!-- Avatar do usuário -->
-                <img src="{{ url_for('static', filename='images/avatars/' + 'user3.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-3').style.display='inline';">
-                <!-- Ícone genérico se o avatar não for encontrado -->
-                <i id="avatar-icon-3" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
-
-                <div class="ml-5">
-                    <div class="task-title">User 3</div>
-                    <div class="task-points">XP: 50</div>
+                <div class="task-card" id="task2">
+                    <div class="task-title">Questify Back</div>
+                    <div class="task-points">Tarefas: 2</div>
                 </div>
             </div>
         </div>
+        <!-- In Progress Column -->
+        <div class="col-md-4">
+            <div class="board-column" id="inprogress">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mt-2">Tarefas</h4>
+                    <button class="btn btn-sm d-flex align-items-center justify-content-center btn-add" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                {% for task in todo %}
+                <div class="task-card" id="task2">
+                    <div class="task-title">{{ task[0] }} | {{ task[2] }}</div>
+                    <div class="task-points">XP: {{ task[1] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Done Column -->
+        <div class="col-md-4">
+            <div class="board-column" id="done">
+                <h4>Ranking</h4>
+                <div class="task-card d-flex align-items-center" id="rank1">
+                    <!-- Avatar do usuário -->
+                    <img src="{{ url_for('static', filename='images/avatars/' + 'user1.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-1').style.display='inline';">
+                    <!-- Ícone genérico se o avatar não for encontrado -->
+                    <i id="avatar-icon-1" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                    <div class="ml-5">
+                        <div class="task-title">User 1</div>
+                        <div class="task-points">XP: 50</div>
+                    </div>
+                </div>
+                <div class="task-card d-flex align-items-center" id="rank2">
+                    <!-- Avatar do usuário -->
+                    <img src="{{ url_for('static', filename='images/avatars/' + 'user2.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-2').style.display='inline';">
+                    <!-- Ícone genérico se o avatar não for encontrado -->
+                    <i id="avatar-icon-2" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                    <div class="ml-5">
+                        <div class="task-title">User 2</div>
+                        <div class="task-points">XP: 50</div>
+                    </div>
+                </div>
+                <div class="task-card d-flex align-items-center" id="rank3">
+                    <!-- Avatar do usuário -->
+                    <img src="{{ url_for('static', filename='images/avatars/' + 'user3.png') }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-3').style.display='inline';">
+                    <!-- Ícone genérico se o avatar não for encontrado -->
+                    <i id="avatar-icon-3" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+
+                    <div class="ml-5">
+                        <div class="task-title">User 3</div>
+                        <div class="task-points">XP: 50</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <!-- Modal de Adicionar Projeto -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProjectModalLabel">Adicionar Novo Projeto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProjectForm">
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Nome do Projeto</label>
+                            <input type="text" class="form-control" id="projectName" placeholder="Digite o nome do projeto">
+                        </div>
+                        <button type="submit" class="btn btn-success">Adicionar Projeto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar Tarefa -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Adicionar Nova Tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTaskForm">
+                        <div class="mb-3">
+                            <label for="taskName" class="form-label">Nome da Tarefa</label>
+                            <input type="text" class="form-control" id="taskName" placeholder="Digite o nome da tarefa">
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskXp" class="form-label">XP da Tarefa</label>
+                            <input type="number" class="form-control" id="taskXp" placeholder="Digite o valor de XP da tarefa">
+                        </div>
+                        <div class="mb-3">
+                            <label for="taskProject" class="form-label">Projeto</label>
+                            <select class="form-select" id="taskProject">
+                                <!-- As opções serão preenchidas dinamicamente -->
+                                <option value="0">Questify Front</option>
+                                <option value="1">Questify Back</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Adicionar Tarefa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addProjectForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const projectName = document.getElementById('projectName').value;
+            const projectTasks = document.getElementById('projectTasks').value;
+            console.log('Novo Projeto:', projectName, projectTasks);
+            // Adicione o projeto no backend ou frontend aqui
+        });
+
+        document.getElementById('addTaskForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const taskName = document.getElementById('taskName').value;
+            const taskXp = document.getElementById('taskXp').value;
+            const taskProject = document.getElementById('taskProject').value;
+            console.log('Nova Tarefa:', taskName, taskXp, taskProject);
+            // Adicione a tarefa no backend ou frontend aqui
+        });
+    </script>
+
 {% endblock %}
