@@ -202,6 +202,117 @@
             border-radius: 50%;
             margin-bottom: 15px;
         }
+
+        /* Estilo do botão "+" */
+        .btn-add {
+            background-color: transparent;
+            width: 36px;
+            height: 36px;
+            color: #333; /* Ícone preto no modo claro */
+            transition: all 0.3s ease;
+        }
+
+        .btn-add i {
+            font-size: 16px;
+        }
+
+        /* Hover no botão */
+        .btn-add:hover {
+            background-color: #333;
+            color: #fff; /* Ícone branco no hover no modo claro */
+        }
+
+        .dark-mode .btn-add {
+            color: #fff; /* Ícone branco no modo escuro */
+        }
+
+        .dark-mode .btn-add:hover {
+            background-color: #fff;
+            color: #333; /* Ícone preto no hover no modo escuro */
+        }
+
+        /* Estilo padrão do modal */
+        .modal-content {
+            background-color: #fff;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        /* Estilo do modal no modo escuro */
+        .dark-mode .modal-content {
+            background-color: #333;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .modal-header {
+            border-bottom: 1px solid #555;
+        }
+
+        .dark-mode .modal-footer {
+            border-top: 1px solid #555;
+        }
+
+        /* Ajustar os campos de input no modo escuro */
+        .dark-mode .modal-body input {
+            background-color: #555;
+            color: #f8f9fa;
+            border: 1px solid #777;
+        }
+
+        .dark-mode .modal-body input::placeholder {
+            color: #bbb;
+        }
+
+        /* Estilo padrão do select */
+        .form-select {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+        }
+
+        /* Modo escuro para o select */
+        .dark-mode .form-select {
+            background-color: #555; /* Cor de fundo escura */
+            color: #f8f9fa; /* Cor do texto clara */
+            border: 1px solid #777; /* Borda mais escura */
+        }
+
+        /* Placeholder para o select no modo escuro */
+        .dark-mode .form-select option {
+            background-color: #555;
+            color: #f8f9fa;
+        }
+
+        /* Hover e foco no select no modo escuro */
+        .dark-mode .form-select:focus {
+            background-color: #666; /* Fundo mais escuro no foco */
+            border-color: #999; /* Borda mais clara no foco */
+            box-shadow: none;
+        }
+
+        /* Estilo do botão de edição */
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Estilo do botão de edição no modo escuro */
+        .dark-mode .btn-outline-secondary {
+            border-color: #f8f9fa;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+            color: #333;
+        }
     </style>
 </head>
 <body class="dark-mode"> <!-- Modo escuro ativado por padrão -->
