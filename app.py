@@ -25,6 +25,14 @@ def rewards():
 def profile():
     return render_template("profile.html")
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def signup():
+    return render_template("signup.html")
+
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))
 
