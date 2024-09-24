@@ -18,9 +18,9 @@
                 <div class="task-points">XP: 30</div>
             </div>
             {% for task in todo %}
-            <div class="task-card" id="task2" draggable="true" ondragstart="drag(event)">
-                <div class="task-title">{{ task[0] }}</div>
-                <div class="task-points">XP: {{ task[1] }}</div>
+            <div class="task-card" id="task-{{ task[0] }}" draggable="true" ondragstart="drag(event)">
+                <div class="task-title">{{ task[1] }}</div>
+                <div class="task-points">XP: {{ task[2] }}</div>
             </div>
             {% endfor %}
         </div>
