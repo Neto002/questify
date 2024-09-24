@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Cadastro - Questify{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="board-column p-4">
+                <h2 class="text-center">Cadastro</h2>
+                <form action="/cadastro" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu nome" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sobrenome" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Digite seu sobrenome" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nascimento" class="form-label">Data de Nascimento</label>
+                        <input type="date" class="form-control" id="nascimento" name="nascimento" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cargo" class="form-label">Cargo</label>
+                        <input type="text" class="form-control" id="cargo" name="cargo" placeholder="Digite seu cargo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="/login" class="text-decoration-none">Já tem uma conta? Faça login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

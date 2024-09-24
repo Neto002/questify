@@ -36,14 +36,7 @@ def table_exists(table_name):
 
 @app.route("/")
 def index():
-    return render_template("index.html", todo=[[1,"Tarefa 1",50],[2,"Tarefa 2",30]])
-
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:2678314680.
-# Suggested code may be subject to a license. Learn more: ~LicenseLog:1603898920.
-@app.route("/test")
-def test():
-
-    return f'{table_exists("usuarios")}'
+    return render_template("index.html", todo=[["Tarefa 1",50,"Questify Front"],["Tarefa 2",30,"Questify Front"],["Tarefa 3",50,"Questify Back"],["Tarefa 4",30,"Questify Back"]])
 
 @app.route("/missions")
 def missions():
@@ -56,6 +49,14 @@ def rewards():
 @app.route("/profile")
 def profile():
     return render_template("profile.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def signup():
+    return render_template("signup.html")
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))
