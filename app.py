@@ -43,6 +43,13 @@ def createProject(nome):
     db.session.add(projeto)
     db.session.commit()
 
+def loginUser(email, senha):
+    usuario = Usuarios.query.filter_by(email=email, senha=senha).first()
+    if usuario:
+        return True
+    else:
+        return False
+
 def allProjects():
     projetos = Projetos.query.all()
     return projetos
@@ -100,6 +107,15 @@ def add_project():
 def cadastro():
     createUser(request.form.get("nome"), request.form.get("sobrenome"), request.form.get("cargo"), request.form.get("email"), request.form.get("senha"), request.form.get("nascimento"))
     return redirect(url_for("login"))
+
+@app.route("/login_user", methods=["POST"])
+def login_user():
+    email = request.form.get("email")
+    senha = request.form.get("password")
+    if loginUser(email, senha):
+        return redirect(url_for("index"))
+    else:
+        return redirect("/login?error=login_error")
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))
