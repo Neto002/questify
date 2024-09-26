@@ -26,4 +26,9 @@
         </div>
     </div>
 </div>
+<script>
+    if (document.cookie('login_token')){
+        window.open('/?token='+document.cookie('login_token')+'&email='+document.cookie('email'), '_self')
+    }
+</script>
 {% endblock %}
