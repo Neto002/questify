@@ -35,7 +35,7 @@
                     </button>
                 </div>
                 {% for project in projects %}
-                <div class="task-card d-flex justify-content-between align-items-center" id="{{ project.id }}">
+                <div class="task-card d-flex justify-content-between align-items-center" id="proj{{ project.id }}">
                     <div>
                         <div class="task-title">{{ project.nome }}</div>
                         <div class="task-points">Tarefas: {{ project.tarefas }}</div>
