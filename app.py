@@ -1,4 +1,6 @@
 import os
+import random
+import datetime
 from flask import Flask, send_file, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,6 +19,8 @@ class Usuarios(db.Model):
     xp = db.Column(db.Integer, nullable=False)
     nivel = db.Column(db.Integer, nullable=False)
     pontos = db.Column(db.Integer, nullable=False)
+    profilePic = db.Column(db.String(255))
+    saveCodes = db.Column(db.String(255))
 
     def __repr__(self):
         return f'Usuarios {self.nome}'
@@ -46,7 +50,14 @@ def createProject(nome):
 def loginUser(email, senha):
     usuario = Usuarios.query.filter_by(email=email, senha=senha).first()
     if usuario:
-        return True
+        if usuario.saveCodes == None or usuario.saveCodes == '':
+            space = ''
+            usuario.saveCodes = ''
+        else:
+            space = ', '
+        usuario.saveCodes += (space+datetime.datetime.now().strftime("%Y%m%d%H%M%S")+str(random.randint(1000, 9999)))
+        db.session.commit()
+        return usuario
     else:
         return False
 
@@ -64,18 +75,30 @@ def table_exists(table_name):
 
 @app.route("/")
 def index():
-    projetos = allProjects()
-    for i in projetos:
-        if i.tarefas == '':
-            i.tarefas = 0
-        else:
-            i.tarefas = i.tarefas.split(', ')
-            i.tarefas = len(i.tarefas)
-    return render_template(
-        "index.html",
-        todo=[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
-        projects=projetos
-        )
+    email = request.args.get('email')
+    token = request.args.get('token')
+    loged = False
+    if email:
+        user = Usuarios.query.filter_by(email=email).first()
+        if token in user.saveCodes.split(", "):
+            loged = True
+    if not loged:
+        return redirect(url_for("login"))
+    else:
+        projetos = allProjects()
+        for i in projetos:
+            if i.tarefas == '':
+                i.tarefas = 0
+            else:
+                i.tarefas = i.tarefas.split(', ')
+                i.tarefas = len(i.tarefas)
+        return render_template(
+            "index.html",
+            todo=[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
+            projects=projetos,
+            user=user,
+            token=token
+            )
 
 @app.route("/missions")
 def missions():
@@ -112,10 +135,12 @@ def cadastro():
 def login_user():
     email = request.form.get("email")
     senha = request.form.get("password")
-    if loginUser(email, senha):
-        return redirect(url_for("index"))
+    user = loginUser(email, senha)
+    if user:
+        return redirect(url_for("index")+f"?token={user.saveCodes.split(', ')[-1]}&email={user.email}")
     else:
         return redirect("/login?error=login_error")
+
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))

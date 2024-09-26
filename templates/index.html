@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1 class="text-center">Questify - Gamifique suas Tarefas!</h1>
+    <h2>{{ user.nome }}</h2>
     <div class="row mt-4">
         <!-- Projects Column -->
         <div class="col-md-4">
@@ -221,6 +222,26 @@
     </div>
 
     <script>
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        if (getCookie('login_token') == ''){
+            document.cookie = 'login_token={{ token }}';
+            document.cookie = 'email={{ user.email }}';
+        }
+        getElementById("profilePic").src="{{ user.profilePic }}"
         /*document.getElementById('addProjectForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const projectName = document.getElementById('projectName').value;
