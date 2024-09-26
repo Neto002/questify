@@ -339,7 +339,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- Imagem do avatar com fallback para ícone genérico -->
-                            <img src="{{ user.profilePic }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon').style.display='inline';">
+                            <img src="{% if user %}{{ user.profilePic }}{% else %}{{ url_for('static', filename='img/avatar.png') }}"{% endif %} alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon').style.display='inline';">
                             <!-- Ícone genérico escondido inicialmente -->
                             <i id="avatar-icon" class="fas fa-user-circle" style="font-size: 40px; color: white; display: none;"></i>
                         </a>

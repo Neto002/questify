@@ -55,7 +55,7 @@ def loginUser(email, senha):
             usuario.saveCodes = ''
         else:
             space = ', '
-        usuario.saveCodes += (space+datetime.datetime.now().strftime("%Y%m%d%H%M%S")+str(random.randint(1000, 9999)))
+        usuario.saveCodes += (space+datetime.datetime.now().strftime("%Y%m%d%H%M%S")+str(random.randint(10, 99)))
         db.session.commit()
         return usuario
     else:
@@ -64,6 +64,11 @@ def loginUser(email, senha):
 def allProjects():
     projetos = Projetos.query.all()
     return projetos
+
+def deleteProject(id):
+    projeto = Projetos.query.filter_by(id=id).first()
+    db.session.delete(projeto)
+    db.session.commit()
 
 def table_exists(table_name):
     try:
@@ -80,7 +85,7 @@ def index():
     loged = False
     if email:
         user = Usuarios.query.filter_by(email=email).first()
-        if token in user.saveCodes.split(", "):
+        if user and token in user.saveCodes.split(", "):
             loged = True
     if not loged:
         return redirect(url_for("login"))
@@ -140,6 +145,12 @@ def login_user():
         return redirect(url_for("index")+f"?token={user.saveCodes.split(', ')[-1]}&email={user.email}")
     else:
         return redirect("/login?error=login_error")
+
+@app.route("/delete_project", methods=["POST"])
+def delete_project():
+    project_id = request.form.get("project_id")
+    deleteProject(project_id)
+    return redirect(url_for("index"))
 
 
 def main():
