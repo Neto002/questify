@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker container
         run: |
-          docker compose up -d --build
+          docker compose build
 
       - name: Push to Docker Hub Container Registry
         run: |
@@ -34,6 +34,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Update Repo
+        run: |
+          if [ ! -d "questify"]; then
+            git clone git@github.com:Neto002/questify.git
+          else
+            cd questify && git pull
+          fi
+
       - name: Pull Container
         run: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/questify
+          docker-compose down
+          docker-compose up -d
