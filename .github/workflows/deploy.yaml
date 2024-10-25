@@ -44,6 +44,7 @@ jobs:
 
       - name: Pull Container
         run: |
+          pwd
           docker pull ${{ secrets.DOCKER_USERNAME }}/questify
           docker compose down
           docker compose up -d
