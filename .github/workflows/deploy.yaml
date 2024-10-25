@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker container
         run: |
-          docker compose build
+          docker compose up -d --build
 
       - name: Push to Docker Hub Container Registry
         run: |
