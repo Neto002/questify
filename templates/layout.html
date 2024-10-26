@@ -32,8 +32,10 @@
             font-size: 24px;
             cursor: pointer;
             color: white; /* Cor inicial do ícone de sol */
-            margin-left: 20px;
+            /*margin-left: 20px;*/
             transition: color 0.3s ease-in-out;
+            width: 40px;
+            height: 60px;
         }
 
         /* Ícone de sol e lua animado */
@@ -335,8 +337,8 @@
                         <a class="nav-link {% if request.path == '/rewards' %}active{% endif %}" href="/rewards">Recompensas</a>
                     </li>
                 </ul>
-                <div class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
+                <div class="navbar-nav ms-auto d-flex align-items-start">
+                    <li class="nav-item dropdown ms-2">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- Imagem do avatar com fallback para ícone genérico -->
                             <img src="{% if user %}{{ user.profilePic }}{% else %}{{ url_for('static', filename='img/avatar.png') }}"{% endif %} alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon').style.display='inline';">
@@ -349,11 +351,11 @@
                             <li><a class="dropdown-item" href="/logout">Sair</a></li>
                         </ul>
                     </li>
+                    <!-- Botão de alternância de tema com ícone dinâmico -->
+                    <button id="darkModeToggle" class="btn-theme-toggle ms-2">
+                        <i id="theme-icon" class="fas fa-sun"></i>
+                    </button>
                 </div>
-                <!-- Botão de alternância de tema com ícone dinâmico -->
-                <button id="darkModeToggle" class="btn-theme-toggle">
-                    <i id="theme-icon" class="fas fa-sun"></i>
-                </button>
             </div>
         </div>
     </nav>
