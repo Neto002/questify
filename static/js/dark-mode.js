@@ -123,3 +123,32 @@ function redeemReward(rewardName, rewardCost) {
         });
     }
 }
+
+function toggleTaskStatus(taskId) {
+    const checkbox = document.getElementById(`task-${taskId}`).querySelector('input[type="checkbox"]');
+    const status = checkbox.checked;
+
+    const body = JSON.stringify({
+            task_id: taskId,
+            status: status})
+
+    fetch('http://127.0.0.1:5000/update_task_status', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: body
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (!data.success) {
+            alert("Erro ao atualizar a tarefa");
+            checkbox.checked = !status; // Reverte se houve erro
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao atualizar a tarefa:', error);
+        checkbox.checked = !status; // Reverte se houve erro
+    });
+}
