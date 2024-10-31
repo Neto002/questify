@@ -236,11 +236,7 @@
             }
             return "";
         }
-        if (getCookie('login_token') == ''){
-            document.cookie = 'login_token={{ token }}';
-            document.cookie = 'email={{ user.email }}';
-        }
-        getElementById("profilePic").src="{{ user.profilePic }}"
+        getElementById("profilePic").src="static/profile.png"
         /*document.getElementById('addProjectForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const projectName = document.getElementById('projectName').value;
