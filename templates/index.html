@@ -58,9 +58,15 @@
                     </button>
                 </div>
                 {% for task in todo %}
-                <div class="task-card" id="{{ task[4] }}" onclick="editTask('{{ task[0] }}', '{{ task[1] }}', '{{ task[2] }}')">
-                    <div class="task-title">{{ task[0] }} | {{ task[2] }}</div>
-                    <div class="task-points">XP: {{ task[1] }}</div>
+                <div class="task-card d-flex justify-content-between align-items-center" id="task-{{ task[3] }}">
+                    <div>
+                        <div class="task-title" onclick="editTask('{{ task[0] }}', '{{ task[1] }}', '{{ task[2] }}')">{{ task[0] }} | {{ task[2] }}</div>
+                        <div class="task-points" onclick="editTask('{{ task[0] }}', '{{ task[1] }}', '{{ task[2] }}')">XP: {{ task[1] }}</div>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="form-check-input me-2"
+                   {% if task[4] %} checked {% endif %} onclick="toggleTaskStatus({{ task[3] }})" />
+                    </div>
                 </div>
                 {% endfor %}
             </div>
