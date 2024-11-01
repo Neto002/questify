@@ -117,15 +117,27 @@ def index():
 
 @app.route("/missions")
 def missions():
-    return render_template("missions.html")
+    global session
+    if not session:
+        return redirect(url_for("login"))
+    else:
+        return render_template("missions.html")
 
 @app.route("/rewards")
 def rewards():
-    return render_template("rewards.html")
+    global session
+    if not session:
+        return redirect(url_for("login"))
+    else:
+        return render_template("rewards.html")
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    global session
+    if not session:
+        return redirect(url_for("login"))
+    else:
+        return render_template("profile.html")
 
 @app.route("/login")
 def login():
@@ -156,6 +168,12 @@ def login_user():
         return redirect(url_for("index"))
     else:
         return redirect("/login?error=login_error")
+
+@app.route("/logout")
+def logout():
+    global session
+    session = None
+    return redirect(url_for("login"))
 
 @app.route("/delete_project", methods=["POST"])
 def delete_project():
