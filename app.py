@@ -70,6 +70,7 @@ def createTask(nome, xp, projeto, concluida):
 def allTasks():
     return Tarefas.query.all()
 
+
 def loginUser(email):
     usuario = Usuarios.query.filter_by(email=email).first()
     if usuario:
