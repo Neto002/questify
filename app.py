@@ -1,8 +1,11 @@
 import os
 import random
 import datetime
+from crypt import methods
+
 from flask import Flask, send_file, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import nullsfirst
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -36,6 +39,16 @@ class Projetos(db.Model):
     def __repr__(self):
         return f'Projetos {self.nome}'
 
+class Tarefas(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    xp = db.Column(db.Integer, nullable=False)
+    projeto = db.Column(db.String(255), nullable=False)
+    concluida = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return f'Tarefas {self.nome}'
+
 with app.app_context():
     db.create_all()
 
@@ -48,6 +61,14 @@ def createProject(nome):
     projeto = Projetos(nome=nome, integrantes='', tarefas='')
     db.session.add(projeto)
     db.session.commit()
+
+def createTask(nome, xp, projeto, concluida):
+    task = Tarefas(nome=nome, xp=xp, projeto=projeto, concluida=concluida)
+    db.session.add(task)
+    db.session.commit()
+
+def allTasks():
+    return Tarefas.query.all()
 
 def loginUser(email):
     usuario = Usuarios.query.filter_by(email=email).first()
@@ -142,6 +163,18 @@ def delete_project():
     deleteProject(project_id)
     return redirect(url_for("index"))
 
+
+@app.route("/update_task_status", methods=["POST"])
+def update_task_status():
+    task_id = request.json.get("task_id")
+    status = request.json.get("status")
+    tarefa = Tarefas.query.get(task_id)
+
+    if tarefa:
+        tarefa.concluida = status
+        db.session.commit()
+        return jsonify({"success": True})
+    return jsonify({"success": False, "error": "Tarefa não encontrada"}), 404
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))
