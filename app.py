@@ -11,6 +11,8 @@ app = Flask(__name__)
 app.config.from_object('config.Config')
 db = SQLAlchemy(app)
 
+session = None
+
 class Usuarios(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
@@ -68,16 +70,9 @@ def createTask(nome, xp, projeto, concluida):
 def allTasks():
     return Tarefas.query.all()
 
-def loginUser(email, senha):
-    usuario = Usuarios.query.filter_by(email=email, senha=senha).first()
+def loginUser(email):
+    usuario = Usuarios.query.filter_by(email=email).first()
     if usuario:
-        if usuario.saveCodes == None or usuario.saveCodes == '':
-            space = ''
-            usuario.saveCodes = ''
-        else:
-            space = ', '
-        usuario.saveCodes += (space+datetime.datetime.now().strftime("%Y%m%d%H%M%S")+ str(random.randint(10, 99)))
-        db.session.commit()
         return usuario
     else:
         return False
@@ -101,14 +96,8 @@ def table_exists(table_name):
 
 @app.route("/")
 def index():
-    email = request.args.get('email')
-    token = request.args.get('token')
-    loged = False
-    if email:
-        user = Usuarios.query.filter_by(email=email).first()
-        if user and token in user.saveCodes.split(", "):
-            loged = True
-    if not loged:
+    global session
+    if not session:
         return redirect(url_for("login"))
     else:
         projetos = allProjects()
@@ -122,8 +111,8 @@ def index():
             "index.html",
             todo=[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
             projects=projetos,
-            user=user,
-            token=token
+            user=session,
+            profilePic = session.profilePic
             )
 
 @app.route("/missions")
@@ -159,11 +148,12 @@ def cadastro():
 
 @app.route("/login_user", methods=["POST"])
 def login_user():
+    global session
     email = request.form.get("email")
-    senha = request.form.get("password")
-    user = loginUser(email, senha)
+    user = loginUser(email)
     if user:
-        return redirect(url_for("index")+f"?token={user.saveCodes.split(', ')[-1]}&email={user.email}")
+        session = loginUser(user.email)
+        return redirect(url_for("index"))
     else:
         return redirect("/login?error=login_error")
 
