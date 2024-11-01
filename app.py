@@ -116,14 +116,6 @@ def index():
             profilePic = session.profilePic
             )
 
-@app.route("/missions")
-def missions():
-    global session
-    if not session:
-        return redirect(url_for("login"))
-    else:
-        return render_template("missions.html")
-
 @app.route("/rewards")
 def rewards():
     global session
