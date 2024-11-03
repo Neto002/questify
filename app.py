@@ -42,6 +42,9 @@ class Tarefas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     xp = db.Column(db.Integer, nullable=False)
+    pontos = db.Column(db.Integer, nullable=False)
+    usuario = db.Column(db.Integer, nullable=False)
+    prazo = db.Column(db.Date, nullable=False)
     projeto = db.Column(db.String(255), nullable=False)
     concluida = db.Column(db.Boolean, default=False)
 
@@ -57,17 +60,19 @@ def createUser(nome, sobrenome, cargo, email, senha, nascimento):
     db.session.commit()
 
 def createProject(nome):
-    projeto = Projetos(nome=nome, integrantes='', tarefas='')
+    projeto = Projetos(nome=nome, integrantes=f"session.id,", tarefas='')
     db.session.add(projeto)
     db.session.commit()
 
-def createTask(nome, xp, projeto, concluida):
-    task = Tarefas(nome=nome, xp=xp, projeto=projeto, concluida=concluida)
+def createTask(nome, xp, pontos, usuario, prazo, projeto):
+    task = Tarefas(nome=nome, xp=xp, pontos=pontos, usuario=usuario, prazo=prazo, projeto=projeto)
     db.session.add(task)
+    project = Projetos.query.filter_by(id=projeto).first()
+    project.tarefas += f"{task.id},"
     db.session.commit()
 
-def allTasks():
-    return Tarefas.query.all()
+def allTasks(user):
+    return Tarefas.query.filter_by(usuario=user.id)
 
 def allUsers():
     return Usuarios.query.order_by(Usuarios.xp.desc()).all()
@@ -106,6 +111,9 @@ def index():
     if not session:
         return redirect(url_for("login"))
     else:
+        tarefas = allTasks(session)
+        for tarefa in tarefas:
+            tarefa.proj = Projetos.query.filter_by(id=tarefa.projeto).first().nome
         projetos = allProjects()
         for i in projetos:
             if i.tarefas == '':
@@ -115,7 +123,7 @@ def index():
                 i.tarefas = len(i.tarefas)
         return render_template(
             "index.html",
-            todo=[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
+            todo=tarefas, #[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
             projects=projetos,
             user=session,
             profilePic = session.profilePic,
@@ -151,6 +159,17 @@ def add_project():
     project_name = request.form.get("projectName")
     createProject(project_name)
     return redirect(url_for("index"))
+
+@app.route("/add_task", methods=["POST"])
+def add_task():
+    nome = request.form.get("titulo")
+    xp = request.form.get("xp")
+    pontos = request.form.get("pontos")
+    usuario = request.form.get("usuario")
+    prazo = request.form.get("prazo")
+    projeto = request.form.get("projeto")
+    createTask(nome, xp, pontos, usuario, prazo, projeto)
+    return redirect("/")
 
 @app.route("/cadastro", methods=["POST"])
 def cadastro():
