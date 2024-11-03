@@ -34,6 +34,7 @@ class Projetos(db.Model):
     nome = db.Column(db.String(100), nullable=False)
     integrantes = db.Column(db.String(255))
     tarefas = db.Column(db.String(255))
+    gerente = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f'Projetos {self.nome}'
@@ -59,8 +60,8 @@ def createUser(nome, sobrenome, cargo, email, senha, nascimento):
     db.session.add(usuario)
     db.session.commit()
 
-def createProject(nome):
-    projeto = Projetos(nome=nome, integrantes=f"session.id,", tarefas='')
+def createProject(nome, usuario):
+    projeto = Projetos(nome=nome, integrantes=f"{usuario.id},", tarefas='', gerente=usuario.id)
     db.session.add(projeto)
     db.session.commit()
 
@@ -156,8 +157,9 @@ def signup():
 
 @app.route("/add_project", methods=["POST"])
 def add_project():
+    global session
     project_name = request.form.get("projectName")
-    createProject(project_name)
+    createProject(project_name, session)
     return redirect(url_for("index"))
 
 @app.route("/add_task", methods=["POST"])
