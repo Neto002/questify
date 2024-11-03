@@ -46,6 +46,7 @@ jobs:
       - name: Pull Container
         run: |
           cd /root/questify
+          docker rmi neto002/questify
           docker pull ${{ secrets.DOCKER_USERNAME }}/questify
           docker compose down
           docker compose up -d
