@@ -128,18 +128,25 @@ def index():
         return redirect(url_for("login"))
     else:
         tarefas = allTasks(session)
+        newTarefas = []
         for tarefa in tarefas:
-            tarefa.proj = Projetos.query.filter_by(id=tarefa.projeto).first().nome
+            projectName = Projetos.query.filter_by(id=tarefa.projeto).first().nome
+            tarefa.proj = projectName
+            newTarefas.append(tarefa)
         projetos = allMyProjects(session)
         for i in projetos:
             if i.tarefas == '':
                 i.tarefas = 0
             else:
                 i.tarefas = i.tarefas.split(',')
-                i.tarefas = len(i.tarefas)
+                count = 0
+                for task in i.tarefas:
+                    if task != "":
+                        count += 1
+                i.tarefas = count
         return render_template(
             "index.html",
-            todo=tarefas, #[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
+            todo=newTarefas,
             projects=projetos,
             user=session,
             profilePic = session.profilePic,
