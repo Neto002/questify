@@ -38,14 +38,14 @@
                     </button>
                 </div>
                 {% for task in todo %}
-                <div class="task-card d-flex justify-content-between align-items-center" id="task-{{ task[3] }}">
+                <div class="task-card d-flex justify-content-between align-items-center" id="task{{ task.id }}">
                     <div>
-                        <div class="task-title" onclick="editTask('{{ task[0] }}', '{{ task[1] }}', '{{ task[2] }}')">{{ task[0] }} | {{ task[2] }}</div>
-                        <div class="task-points" onclick="editTask('{{ task[0] }}', '{{ task[1] }}', '{{ task[2] }}')">XP: {{ task[1] }}</div>
+                        <div class="task-title" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.projeto }}')">{{ task.nome }} | {{ task.proj }}</div>
+                        <div class="task-points" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.projeto }}')">XP: {{ task.xp }}</div>
                     </div>
                     <div>
                         <input type="checkbox" class="form-check-input me-2"
-                            {% if task[4] %} checked {% endif %} onclick="toggleTaskStatus({{ task[3] }})" />
+                            {% if task.concluida %} checked {% endif %} onclick="toggleTaskStatus(task{{ task.id }})" />
                     </div>
                 </div>
                 {% endfor %}
@@ -102,33 +102,39 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addTaskForm">
+                    <form id="addTaskForm" action="/add_task" method="POST">
                         <div class="mb-3">
                             <label for="taskName" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="taskName" placeholder="Digite o nome da tarefa">
+                            <input name="titulo" type="text" class="form-control" id="taskName" placeholder="Digite o nome da tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="taskXp" class="form-label">XP</label>
-                            <input type="number" class="form-control" id="taskXp" placeholder="Digite o valor de XP da tarefa">
+                            <input name="xp" "type="number" class="form-control" id="taskXp" placeholder="Digite o valor de XP da tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="points" class="form-label">Pontos</label>
-                            <input type="number" class="form-control" id="points" placeholder="Digite o valor de pontos da tarefa">
+                            <input name="pontos" type="number" class="form-control" id="points" placeholder="Digite o valor de pontos da tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="responsible" class="form-label">Atribuir a</label>
-                            <input type="text" class="form-control" id="responsible" placeholder="Digite o nome do responsável pela tarefa">
+                            <select name="usuario" class="form-select" id="responsible">
+                                <!-- Options must be dinamically loaded -->
+                                {% for player in players %}
+                                <option value="{{ player.id }}">{{ player.nome }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="due" class="form-label">Prazo</label>
-                            <input type="date" class="form-control" id="due" placeholder="Selecione o prazo da tarefa">
+                            <input name="prazo" type="date" class="form-control" id="due" placeholder="Selecione o prazo da tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="taskProject" class="form-label">Projeto</label>
-                            <select class="form-select" id="taskProject">
+                            <select name="projeto" class="form-select" id="taskProject">
                                 <!-- Options must be dinamically loaded -->
-                                <option value="0">Questify Front</option>
-                                <option value="1">Questify Back</option>
+                                {% for project in projects %}
+                                <option value="{{ project.id }}">{{ project.nome }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <button type="submit" class="btn btn-success">Adicionar Tarefa</button>
