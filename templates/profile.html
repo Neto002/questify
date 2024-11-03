@@ -7,14 +7,39 @@
 <div class="board-column">
     <div class="profile-card">
         <!-- Imagem do avatar com fallback para ícone genérico grande -->
-        <img src="{{ url_for('static', filename='images/avatar_large.png') }}" alt="Avatar" class="profile-avatar" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-large').style.display='inline';">
+        <img src="/static/media/{{user.profilePic}}" alt="Avatar" class="profile-avatar" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-large').style.display='inline';">
         <!-- Ícone genérico grande escondido inicialmente -->
         <i id="avatar-icon-large" class="fas fa-user-circle" style="font-size: 100px; color: gray; display: none;"></i>
+        <br><br>
+        <button class="btn btn-secondary" data-bs-toggle='modal' data-bs-target='#sendPictureModal'>Mudar foto de Perfil</button>
 
         <div style="margin-top: 10px">
-            <h3>Nome do Usuário</h3>
-            <p>Email: usuario@example.com</p>
-            <p>XP Total: 1500</p>
+            <h3>{{ user.nome }} {{ user.sobrenome }}</h3>
+            <p>Email: {{user.email}}</p>
+            <p>XP Total: {{ user.xp }}</p>
+            <p>Pontos: {{ user.pontos }}</p>
+        </div>
+    </div>
+</div>
+ <div class="modal fade" id="sendPictureModal" tabindex="-1" aria-labelledby="sendPictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sendPictureModalLabel">Send a Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="pictureForm" action="/profileUp" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="picture" class="form-label">Escolha uma imagem</label>
+                        <input type="file" name="img" class="form-control" id="picture" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" form="pictureForm" class="btn btn-primary">Atualizar Foto</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
