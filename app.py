@@ -90,12 +90,27 @@ def updatePic(userID, image):
     user.profilePic = image
 
 def allProjects():
-    projetos = Projetos.query.all()
+    projetos = projetos.query.all()
     return projetos
+
+def allMyProjects(user):
+    projetos = Projetos.query.all()
+    myProjects = []
+    for i in projetos:
+        membros = i.integrantes.split(",")
+        for userId in membros:
+            if str(user.id) == userId:
+                myProjects.append(i)
+    return myProjects
 
 def deleteProject(id):
     projeto = Projetos.query.filter_by(id=id).first()
     db.session.delete(projeto)
+    db.session.commit()
+
+def deleteTarefa(id):
+    task = Tarefas.query.filter_by(id=id).first()
+    db.session.delete(task)
     db.session.commit()
 
 def table_exists(table_name):
@@ -115,12 +130,12 @@ def index():
         tarefas = allTasks(session)
         for tarefa in tarefas:
             tarefa.proj = Projetos.query.filter_by(id=tarefa.projeto).first().nome
-        projetos = allProjects()
+        projetos = allMyProjects(session)
         for i in projetos:
             if i.tarefas == '':
                 i.tarefas = 0
             else:
-                i.tarefas = i.tarefas.split(', ')
+                i.tarefas = i.tarefas.split(',')
                 i.tarefas = len(i.tarefas)
         return render_template(
             "index.html",
@@ -162,6 +177,17 @@ def add_project():
     createProject(project_name, session)
     return redirect(url_for("index"))
 
+@app.route("/edit_project", methods=["POST"])
+def edit_project():
+    global session
+    id = request.form.get("id")
+    print(id)
+    nome = request.form.get("nome")
+    project = Projetos.query.filter_by(id=id).first()
+    project.nome = nome
+    db.session.commit()
+    return redirect(url_for("index"))
+
 @app.route("/add_task", methods=["POST"])
 def add_task():
     nome = request.form.get("titulo")
@@ -199,6 +225,13 @@ def logout():
 @app.route("/delete_project", methods=["POST"])
 def delete_project():
     project_id = request.form.get("project_id")
+    project = Projetos.query.filter_by(id=project_id).first()
+    tasks = project.tarefas
+    tasks = tasks.split(",")
+    tasks.pop()
+    for i in tasks:
+        task = Tarefas.query.filter_by(id=int(i)).first()
+        deleteTarefa(task.id)
     deleteProject(project_id)
     return redirect(url_for("index"))
 
@@ -216,14 +249,26 @@ def update_profile():
     else:
         return "Error: 400"
 
+@app.route("/task_toggle/<taskId>")
+def task_toggle(taskId):
+    tarefa = Tarefas.query.filter_by(id=int(taskId)).first()
+    if tarefa.concluida:
+        tarefa.concluida = False
+    else:
+        tarefa.concluida = True
+    db.session.commit()
+    return redirect("/")
+
 @app.route("/update_task_status", methods=["POST"])
 def update_task_status():
+    print("\n\n\n\n\n")
     task_id = request.json.get("task_id")
     status = request.json.get("status")
-    tarefa = Tarefas.query.get(task_id)
+    tarefa = Tarefas.query.filter_by(id=task_id).first()
 
     if tarefa:
         tarefa.concluida = status
+        print(status)
         db.session.commit()
         return jsonify({"success": True})
     return jsonify({"success": False, "error": "Tarefa não encontrada"}), 404

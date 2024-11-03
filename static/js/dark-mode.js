@@ -57,10 +57,10 @@ function drop(event) {
 }
 
 // Função para abrir o modal de edição de projetos
-function editProject(projectName, taskCount) {
+function editProject(projectName, projectId) {
     // Preencher os campos do modal
     document.getElementById('editProjectName').value = projectName;
-    document.getElementById('editProjectTasks').value = taskCount;
+    document.getElementById('editProjectId').value = projectId;
 
     // Exibir o modal de edição de projetos
     var projectModal = new bootstrap.Modal(document.getElementById('editProjectModal'));
@@ -95,6 +95,19 @@ function editTask(taskName, taskXp, taskProject) {
     };
 }
 
+// Função para abrir o modal de edição de tarefas
+function deleteProject(projectName, id) {
+    // Preencher os campos do modal
+    document.getElementById('deleteProjectLabel').value = `Deletar $(projectName)?`;
+    document.getElementById('deleteProjectData').value = id;
+
+    // Exibir o modal de edição de tarefas
+    var taskModal = new bootstrap.Modal(document.getElementById('deleteProjectModal'));
+    taskModal.show();
+
+};
+
+
 // Função para resgatar uma recompensa
 function redeemReward(rewardName, rewardCost) {
     if (confirm(`Você deseja realmente resgatar a recompensa "${rewardName}" por ${rewardCost} XP?`)) {
@@ -124,31 +137,6 @@ function redeemReward(rewardName, rewardCost) {
     }
 }
 
-function toggleTaskStatus(taskId) {
-    const checkbox = document.getElementById(`task-${taskId}`).querySelector('input[type="checkbox"]');
-    const status = checkbox.checked;
-
-    const body = JSON.stringify({
-            task_id: taskId,
-            status: status})
-
-    fetch('http://127.0.0.1:5000/update_task_status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: body
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        if (!data.success) {
-            alert("Erro ao atualizar a tarefa");
-            checkbox.checked = !status; // Reverte se houve erro
-        }
-    })
-    .catch(error => {
-        console.error('Erro ao atualizar a tarefa:', error);
-        checkbox.checked = !status; // Reverte se houve erro
-    });
+function toggleTaskStatus(taskId, status, home) {
+    window.open(`$(home)/?taskID=$(taskId)&status=$(status)`)
 }
