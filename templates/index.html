@@ -41,7 +41,7 @@
                         <div class="task-points">Tarefas: {{ project.tarefas }}</div>
                     </div>
                     <!-- Edit Icon -->
-                    <button class="btn btn-sm btn-add" onclick="editProject('Questify Back', '2')">
+                    <button class="btn btn-sm btn-add" onclick="editProject('{{ project.nome }}', '{{project.id}}')">
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                 </div>
