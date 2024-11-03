@@ -25,7 +25,6 @@ class Usuarios(db.Model):
     nivel = db.Column(db.Integer, nullable=False)
     pontos = db.Column(db.Integer, nullable=False)
     profilePic = db.Column(db.String(255))
-    saveCodes = db.Column(db.String(255))
 
     def __repr__(self):
         return f'Usuarios {self.nome}'
@@ -122,7 +121,7 @@ def rewards():
     if not session:
         return redirect(url_for("login"))
     else:
-        return render_template("rewards.html")
+        return render_template("rewards.html", user=session)
 
 @app.route("/profile")
 def profile():
@@ -130,15 +129,15 @@ def profile():
     if not session:
         return redirect(url_for("login"))
     else:
-        return render_template("profile.html")
+        return render_template("profile.html", user=session)
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("login.html", user=session)
 
 @app.route("/register")
 def signup():
-    return render_template("signup.html")
+    return render_template("signup.html", user=session)
 
 @app.route("/add_project", methods=["POST"])
 def add_project():
@@ -175,6 +174,17 @@ def delete_project():
     deleteProject(project_id)
     return redirect(url_for("index"))
 
+@app.route("/profileUp", methods=["POST"])
+def update_profile():
+    global session
+    if 'img' in request.files:
+        img = request.files["img"]
+        session.profilePic = f"{session.id}.profile.jpg"
+        img.save(f"static/media/{session.profilePic}")
+        db.session.commit
+        return redirect("/profile")
+    else:
+        return "Error: 400"
 
 @app.route("/update_task_status", methods=["POST"])
 def update_task_status():
