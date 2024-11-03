@@ -71,8 +71,8 @@ def allTasks():
     return Tarefas.query.all()
 
 
-def loginUser(email):
-    usuario = Usuarios.query.filter_by(email=email).first()
+def loginUser(email, senha):
+    usuario = Usuarios.query.filter_by(email=email, senha=senha).first()
     if usuario:
         return usuario
     else:
@@ -155,9 +155,10 @@ def cadastro():
 def login_user():
     global session
     email = request.form.get("email")
-    user = loginUser(email)
+    senha = request.form.get("password")
+    user = loginUser(email, senha)
     if user:
-        session = loginUser(user.email)
+        session = user
         return redirect(url_for("index"))
     else:
         return redirect("/login?error=login_error")
