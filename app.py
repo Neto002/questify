@@ -69,6 +69,8 @@ def createTask(nome, xp, projeto, concluida):
 def allTasks():
     return Tarefas.query.all()
 
+def allUsers():
+    return Usuarios.query.order_by(Usuarios.xp.desc()).all()
 
 def loginUser(email, senha):
     usuario = Usuarios.query.filter_by(email=email, senha=senha).first()
@@ -76,6 +78,10 @@ def loginUser(email, senha):
         return usuario
     else:
         return False
+
+def updatePic(userID, image):
+    user = Usuarios.query.filter_by(id=userID).first()
+    user.profilePic = image
 
 def allProjects():
     projetos = Projetos.query.all()
@@ -112,7 +118,8 @@ def index():
             todo=[["Tarefa 1",50,"Questify Front",1],["Tarefa 2",30,"Questify Front",2],["Tarefa 3",50,"Questify Back",3],["Tarefa 4",30,"Questify Back",4]],
             projects=projetos,
             user=session,
-            profilePic = session.profilePic
+            profilePic = session.profilePic,
+            players = allUsers()
             )
 
 @app.route("/rewards")
@@ -177,11 +184,13 @@ def delete_project():
 @app.route("/profileUp", methods=["POST"])
 def update_profile():
     global session
+    user = loginUser(session.email, session.senha)
     if 'img' in request.files:
         img = request.files["img"]
         session.profilePic = f"{session.id}.profile.jpg"
-        img.save(f"static/media/{session.profilePic}")
-        db.session.commit
+        updatePic(session.id,session.profilePic)
+        img.save(f"static/media/{session.id}.profile.jpg")
+        db.session.commit()
         return redirect("/profile")
     else:
         return "Error: 400"
