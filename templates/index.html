@@ -21,9 +21,14 @@
                         <div class="task-points">Tarefas: {{ project.tarefas }}</div>
                     </div>
                     <!-- Edit Icon -->
-                    <button class="btn btn-sm btn-add" onclick="editProject('{{ project.nome }}', '{{project.id}}')">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
+                    <div class="d-flex justify-content-between align-item-right" id="editProj{{ project.id }}">
+                        <button type="button" class="btn btn-sm btn-add" onclick="deleteProject('{{ project.nome }}',{{ project.id }})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <button class="btn btn-sm btn-add" onclick="editProject('{{ project.nome }}','{{ project.id }}')">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -44,8 +49,11 @@
                         <div class="task-points" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.projeto }}')">XP: {{ task.xp }}</div>
                     </div>
                     <div>
-                        <input type="checkbox" class="form-check-input me-2"
-                            {% if task.concluida %} checked {% endif %} onclick="toggleTaskStatus(task{{ task.id }})" />
+                        {% if task.concluida == True %}
+                        <button class="btn btn-success" onclick="window.open('/task_toggle/{{task.id}}')">Concluido</button>
+                        {% else %}
+                        <button class="btn btn-info" onclick="window.open('/task_toggle/{{task.id}}')">Incompleto</button>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -153,17 +161,36 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editProjectForm">
+                    <form id="editProjectForm" method="POST" action="/edit_project">
                         <div class="mb-3">
                             <label for="editProjectName" class="form-label">Nome do Projeto</label>
-                            <input type="text" class="form-control" id="editProjectName" value="">
+                            <input name="nome" type="text" class="form-control" id="editProjectName" value="">
                         </div>
                         <div class="mb-3">
-                            <label for="editProjectTasks" class="form-label">Quantidade de Tarefas</label>
-                            <input type="number" class="form-control" id="editProjectTasks" value="" readonly>
+                            <label for="editProjectId" class="form-label">ID do projeto</label>
+                            <input name="id" type="number" value="" id="editProjectId" class="form-control" readonly>
                         </div>
                         <button type="submit" class="btn btn-success">Salvar Alterações</button>
-                        <button type="button" class="btn btn-danger" id="deleteProjectButton">Excluir Projeto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Project Delete Modal -->
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProjectModalLabel">Deletar Projeto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteProjectForm" method="POST" action="/delete_project">
+                        <div class="mb-3">
+                            <label id="deleteProjectLabel" class="form-label" class="modal-title">Deseja mesmo apagar esse projeto?</label>
+                            <input hidden name="project_id" type="number" class="form-control" id="deleteProjectData" class="modal-body" value="" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-success">Deletar Projeto</button>
                     </form>
                 </div>
             </div>
@@ -204,7 +231,7 @@
                             <label for="editTaskProject" class="form-label">Projeto</label>
                             <select class="form-select" id="editTaskProject">
                                 {% for project in projects %}
-                                <option value="{{ project[0] }}">{{ project[0] }}</option>
+                                <option value="{{ project.id }}">{{ project.nome }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -232,23 +259,6 @@
             }
             return "";
         }
-        getElementById("profilePic").src="static/profile.png"
-        /*document.getElementById('addProjectForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const projectName = document.getElementById('projectName').value;
-            const projectTasks = document.getElementById('projectTasks').value;
-            console.log('Novo Projeto:', projectName, projectTasks);
-            // Add project in backend or frontend here
-        });*/
-
-        document.getElementById('addTaskForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const taskName = document.getElementById('taskName').value;
-            const taskXp = document.getElementById('taskXp').value;
-            const taskProject = document.getElementById('taskProject').value;
-            console.log('Nova Tarefa:', taskName, taskXp, taskProject);
-            // Add task in backend or frontend here
-        });
     </script>
 
 {% endblock %}
