@@ -252,26 +252,17 @@ def update_profile():
 @app.route("/task_toggle/<taskId>")
 def task_toggle(taskId):
     tarefa = Tarefas.query.filter_by(id=int(taskId)).first()
+    user = Usuarios.query.filter_by(id=session.id).first()
     if tarefa.concluida:
         tarefa.concluida = False
+        user.xp -= tarefa.xp
+        user.pontos -= tarefa.pontos
     else:
         tarefa.concluida = True
+        user.xp += tarefa.xp
+        user.pontos += tarefa.pontos
     db.session.commit()
     return redirect("/")
-
-@app.route("/update_task_status", methods=["POST"])
-def update_task_status():
-    print("\n\n\n\n\n")
-    task_id = request.json.get("task_id")
-    status = request.json.get("status")
-    tarefa = Tarefas.query.filter_by(id=task_id).first()
-
-    if tarefa:
-        tarefa.concluida = status
-        print(status)
-        db.session.commit()
-        return jsonify({"success": True})
-    return jsonify({"success": False, "error": "Tarefa não encontrada"}), 404
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))
