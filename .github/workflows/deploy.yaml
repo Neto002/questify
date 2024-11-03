@@ -46,7 +46,9 @@ jobs:
       - name: Pull Container
         run: |
           cd /root/questify
-          docker rmi neto002/questify
+          if docker images -q "${{ secrets.DOCKER_USERNAME }}/questify" > /dev/null 2>&1; then
+            docker rmi "${{ secrets.DOCKER_USERNAME }}/questify"
+          fi
           docker pull ${{ secrets.DOCKER_USERNAME }}/questify
           docker compose down
           docker compose up -d
