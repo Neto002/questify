@@ -52,6 +52,16 @@ class Tarefas(db.Model):
     def __repr__(self):
         return f'Tarefas {self.nome}'
 
+class Recompensas(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    custo =  db.Column(db.Integer, nullable=False)
+    quantidade =  db.Column(db.Integer, nullable=False)
+    maximo =  db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f'Tarefas {self.nome}'
+
 with app.app_context():
     db.create_all()
 
@@ -70,6 +80,11 @@ def createTask(nome, xp, pontos, usuario, prazo, projeto):
     db.session.add(task)
     project = Projetos.query.filter_by(id=projeto).first()
     project.tarefas += f"{task.id},"
+    db.session.commit()
+
+def createReward(nome, custo, maximo):
+    rec = Recompensas(nome=nome, custo=custo, quantidade=0, maximo=maximo)
+    db.session.add(rec)
     db.session.commit()
 
 def allTasks(user):
@@ -159,7 +174,11 @@ def rewards():
     if not session:
         return redirect(url_for("login"))
     else:
-        return render_template("rewards.html", user=session)
+        return render_template(
+            "rewards.html",
+            user=session,
+            rec=Recompensas.query.all()
+        )
 
 @app.route("/profile")
 def profile():
@@ -205,6 +224,14 @@ def add_task():
     projeto = request.form.get("projeto")
     createTask(nome, xp, pontos, usuario, prazo, projeto)
     return redirect("/")
+
+@app.route("/add_reward", methods=["POST"])
+def add_reward():
+    nome = request.form.get("nome")
+    custo = request.form.get("custo")
+    maximo = request.form.get("maximo")
+    createReward(nome, custo, maximo)
+    return redirect("/rewards")
 
 @app.route("/cadastro", methods=["POST"])
 def cadastro():
@@ -270,6 +297,17 @@ def task_toggle(taskId):
         user.pontos += tarefa.pontos
     db.session.commit()
     return redirect("/")
+
+@app.route("/buy/<itemId>")
+def buy(itemId):
+    global session
+    item = Recompensas.query.filter_by(id=itemId).first()
+    item.quantidade += 1
+    user = Usuarios.query.filter_by(id=session.id).first()
+    user.pontos -= item.custo
+    db.session.commit()
+    session = Usuarios.query.filter_by(id=session.id).first()
+    return redirect("/rewards")
 
 def main():
     app.run(port=int(os.environ.get('PORT', 5000)))

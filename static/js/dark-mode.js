@@ -109,32 +109,8 @@ function deleteProject(projectName, id) {
 
 
 // Função para resgatar uma recompensa
-function redeemReward(rewardName, rewardCost) {
-    if (confirm(`Você deseja realmente resgatar a recompensa "${rewardName}" por ${rewardCost} XP?`)) {
-        // Aqui você pode fazer uma requisição ao backend para processar o resgate
-        fetch('/redeem-reward', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                reward: rewardName,
-                cost: rewardCost
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(`Recompensa "${rewardName}" resgatada com sucesso!`);
-            } else {
-                alert(`Erro: ${data.message}`);
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao resgatar a recompensa:', error);
-            alert('Houve um erro ao processar o resgate. Tente novamente.');
-        });
-    }
+function redeemReward(id) {
+    window.open(`/buy/${id}`,'_self')
 }
 
 function toggleTaskStatus(taskId, status, home) {
