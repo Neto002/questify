@@ -12,38 +12,56 @@
         </button>
     </div>
         <div class="board-column">
-            <!-- Reward 1 -->
+            {% for i in rec %}
             <div class="task-card d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="task-title">Cupom de Desconto 10%</div>
-                    <div class="task-points">Custo: 500 XP</div>
+                    <div class="task-title">{{ i.nome }}</div>
+                    <div class="task-points">Custo: {{ i.custo }} Pontos</div>
+                    <div class="task-points">Quantidade: {{ i.quantidade }} | Maximo: {{ i.maximo }} </div>
                 </div>
-                <button class="btn btn-sm btn-success" onclick="redeemReward('Cupom de Desconto 10%', 500)">
+                {% if user.pontos < i.custo or i.quantidade >= i.maximo %}
+                <button class="btn btn-sm btn-secondary">
                     Resgatar
                 </button>
-            </div>
-
-            <!-- Reward 2 -->
-            <div class="task-card d-flex justify-content-between align-items-center">
-                <div>
-                    <div class="task-title">Acesso ao Conteúdo Exclusivo</div>
-                    <div class="task-points">Custo: 800 XP</div>
-                </div>
-                <button class="btn btn-sm btn-success" onclick="redeemReward('Acesso ao Conteúdo Exclusivo', 800)">
+                {% else %}
+                <button class="btn btn-sm btn-success" onclick="window.open('/buy/{{ i.id }}', '_self')">
                     Resgatar
                 </button>
+                {% endif %}
             </div>
-
-            <!-- Reward 3 -->
-            <div class="task-card d-flex justify-content-between align-items-center">
-                <div>
-                    <div class="task-title">Assinatura Premium por 1 Mês</div>
-                    <div class="task-points">Custo: 1200 XP</div>
-                </div>
-                <button class="btn btn-sm btn-success" onclick="redeemReward('Assinatura Premium por 1 Mês', 1200)">
-                    Resgatar
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addRewardModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Form Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
                 </button>
             </div>
+            <div class="modal-body">
+                <form action="/add_reward" method="POST">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input name="nome" type="text" class="form-control" id="nome" placeholder="Insira o nome da recompensa">
+                    </div>
+                    <div class="form-group">
+                        <label for="custo">Custo</label>
+                        <input name="custo" type="number" class="form-control" id="custo" placeholder="Insira o custo">
+                    </div>
+                    <div class="form-group">
+                        <label for="maximo">Maximo</label>
+                        <input name="maximo" type="number" class="form-control" id="maximo" placeholder="insira a quantidade maxima a ser resgatada">
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Criar Recompensa</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>
