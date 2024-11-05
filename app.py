@@ -291,10 +291,14 @@ def task_toggle(taskId):
         tarefa.concluida = False
         user.xp -= tarefa.xp
         user.pontos -= tarefa.pontos
+        session.xp -= tarefa.xp
+        session.pontos -= tarefa.pontos
     else:
         tarefa.concluida = True
         user.xp += tarefa.xp
         user.pontos += tarefa.pontos
+        session.xp += tarefa.xp
+        session.pontos += tarefa.pontos
     db.session.commit()
     return redirect("/")
 
