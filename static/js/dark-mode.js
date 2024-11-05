@@ -76,11 +76,15 @@ function editProject(projectName, projectId) {
 }
 
 // Função para abrir o modal de edição de tarefas
-function editTask(taskName, taskXp, taskProject) {
+function editTask(taskName, taskXp, taskPontos, taskUser, taskID, taskProject) {
     // Preencher os campos do modal
     document.getElementById('editTaskName').value = taskName;
     document.getElementById('editTaskXp').value = taskXp;
+    document.getElementById('editPoints').value = taskPontos;
+    document.getElementById('editResponsible').value = taskUser;
     document.getElementById('editTaskProject').value = taskProject;
+    //document.getElementById('deleteTaskButton').href = "/delete_task/"+taskID;
+
 
     // Exibir o modal de edição de tarefas
     var taskModal = new bootstrap.Modal(document.getElementById('editTaskModal'));
@@ -89,8 +93,7 @@ function editTask(taskName, taskXp, taskProject) {
     // Adicionar lógica de exclusão de tarefa
     document.getElementById('deleteTaskButton').onclick = function () {
         if (confirm(`Deseja realmente excluir a tarefa "${taskName}"?`)) {
-            // Lógica de exclusão da tarefa
-            console.log(`Tarefa "${taskName}" excluída`);
+            window.open(`/delete_task/${taskID}`,"_self")
         }
     };
 }

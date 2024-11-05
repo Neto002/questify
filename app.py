@@ -269,6 +269,24 @@ def delete_project():
     deleteProject(project_id)
     return redirect(url_for("index"))
 
+@app.route("/delete_task/<taskid>")
+def delete_task(taskid):
+    tarefa = Tarefas.query.filter_by(id=taskid).first()
+    project = Projetos.query.filter_by(id=tarefa.projeto).first()
+    projTasks = project.tarefas
+    projTasks = projTasks.split(",")
+    projTasks.pop()
+    newTasks = ""
+    for i in projTasks:
+        if int(i) == tarefa.id:
+            pass
+        else:
+            newTasks += f"{i},"
+    deleteTarefa(tarefa.id)
+    project.tarefas = newTasks
+    db.session.commit()
+    return redirect(url_for("index"))
+
 @app.route("/profileUp", methods=["POST"])
 def update_profile():
     global session
@@ -285,6 +303,7 @@ def update_profile():
 
 @app.route("/task_toggle/<taskId>")
 def task_toggle(taskId):
+    global session
     tarefa = Tarefas.query.filter_by(id=int(taskId)).first()
     user = Usuarios.query.filter_by(id=session.id).first()
     if tarefa.concluida:
