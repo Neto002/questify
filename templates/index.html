@@ -66,9 +66,9 @@
                 {% for player in players %}
                 <div class="task-card d-flex align-items-center" id="player{{ player.id }}">
                     <!-- User Avatar -->
-                    <img src="/static/media/{{ player.profilePic }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-3').style.display='inline';">
+                    <img src="/static/media/{{ player.profilePic }}" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%; margin-right: 10px;" onerror="this.onerror=null; this.style.display='none'; document.getElementById('avatar-icon-3-{{ player.id }}').style.display='inline';">
                     <!-- Generic icon if there is no user avatar -->
-                    <i id="avatar-icon-3" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
+                    <i id="avatar-icon-3-{{ player.id }}" class="fas fa-user-circle" style="font-size: 40px; color: gray; display: none; margin-right: 10px;"></i>
 
                     <div class="ml-5">
                         <div class="task-title">{{ player.nome }} {{ player.sobrenome }}</div>
