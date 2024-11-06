@@ -225,6 +225,23 @@ def add_task():
     createTask(nome, xp, pontos, usuario, prazo, projeto)
     return redirect("/")
 
+@app.route("/edit_task", methods=["POST"])
+def edit_task():
+    nome = request.form.get("nome")
+    xp = request.form.get("xp")
+    pontos = request.form.get("pontos")
+    usuario = request.form.get("usuario")
+    projeto = request.form.get("projeto")
+    taskId = request.form.get("id")
+    task = Tarefas.query.filter_by(id=int(taskId)).first()
+    task.nome = nome
+    task.xp = int(xp)
+    task.pontos = int(pontos)
+    task.usuario = int(usuario)
+    task.projeto = int(projeto)
+    db.session.commit()
+    return redirect("/")
+
 @app.route("/add_reward", methods=["POST"])
 def add_reward():
     nome = request.form.get("nome")
@@ -269,6 +286,24 @@ def delete_project():
     deleteProject(project_id)
     return redirect(url_for("index"))
 
+@app.route("/delete_task/<taskid>")
+def delete_task(taskid):
+    tarefa = Tarefas.query.filter_by(id=taskid).first()
+    project = Projetos.query.filter_by(id=tarefa.projeto).first()
+    projTasks = project.tarefas
+    projTasks = projTasks.split(",")
+    projTasks.pop()
+    newTasks = ""
+    for i in projTasks:
+        if int(i) == tarefa.id:
+            pass
+        else:
+            newTasks += f"{i},"
+    deleteTarefa(tarefa.id)
+    project.tarefas = newTasks
+    db.session.commit()
+    return redirect(url_for("index"))
+
 @app.route("/profileUp", methods=["POST"])
 def update_profile():
     global session
@@ -285,16 +320,21 @@ def update_profile():
 
 @app.route("/task_toggle/<taskId>")
 def task_toggle(taskId):
+    global session
     tarefa = Tarefas.query.filter_by(id=int(taskId)).first()
     user = Usuarios.query.filter_by(id=session.id).first()
     if tarefa.concluida:
         tarefa.concluida = False
         user.xp -= tarefa.xp
         user.pontos -= tarefa.pontos
+        session.xp -= tarefa.xp
+        session.pontos -= tarefa.pontos
     else:
         tarefa.concluida = True
         user.xp += tarefa.xp
         user.pontos += tarefa.pontos
+        session.xp += tarefa.xp
+        session.pontos += tarefa.pontos
     db.session.commit()
     return redirect("/")
 

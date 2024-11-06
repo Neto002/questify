@@ -45,8 +45,8 @@
                 {% for task in todo %}
                 <div class="task-card d-flex justify-content-between align-items-center" id="task{{ task.id }}">
                     <div>
-                        <div class="task-title" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.projeto }}')">{{ task.nome }} | {{ task.proj }}</div>
-                        <div class="task-points" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.projeto }}')">XP: {{ task.xp }}</div>
+                        <div class="task-title" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.pontos }}', '{{ task.usuario }}',{{ task.id }} , '{{ task.projeto }}')">{{ task.nome }} | {{ task.proj }}</div>
+                        <div class="task-points" onclick="editTask('{{ task.nome }}', '{{ task.xp }}', '{{ task.pontos }}', '{{ task.usuario }}',{{ task.id }} , '{{ task.projeto }}')">XP: {{ task.xp }}</div>
                     </div>
                     <div>
                         {% if task.concluida == True %}
@@ -206,35 +206,32 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editTaskForm">
+                    <form id="editTaskForm" method="POST" action="/edit_task">
                         <div class="mb-3">
                             <label for="editTaskName" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="editTaskName" value="">
+                            <input name="nome" type="text" class="form-control" id="editTaskName" value="">
                         </div>
                         <div class="mb-3">
                             <label for="editTaskXp" class="form-label">XP</label>
-                            <input type="number" class="form-control" id="editTaskXp" value="">
+                            <input name="xp" type="number" class="form-control" id="editTaskXp" value="">
                         </div>
                         <div class="mb-3">
                             <label for="editPoints" class="form-label">Pontos</label>
-                            <input type="number" class="form-control" id="editPoints" placeholder="Digite o valor de pontos da tarefa">
+                            <input name="pontos" type="number" class="form-control" id="editPoints" placeholder="Digite o valor de pontos da tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="editResponsible" class="form-label">Atribuir a</label>
-                            <input type="text" class="form-control" id="editResponsible" placeholder="Digite o nome do responsável pela tarefa">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDue" class="form-label">Prazo</label>
-                            <input type="date" class="form-control" id="editDue" placeholder="Selecione o prazo da tarefa">
+                            <input name="usuario" type="text" class="form-control" id="editResponsible" placeholder="Digite o nome do responsável pela tarefa">
                         </div>
                         <div class="mb-3">
                             <label for="editTaskProject" class="form-label">Projeto</label>
-                            <select class="form-select" id="editTaskProject">
+                            <select name="projeto" class="form-select" id="editTaskProject">
                                 {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.nome }}</option>
                                 {% endfor %}
                             </select>
                         </div>
+                        <input name="id" value="" hidden id="editTaskId">
                         <button type="submit" class="btn btn-success">Salvar Alterações</button>
                         <button type="button" class="btn btn-danger" id="deleteTaskButton">Excluir Tarefa</button>
                     </form>
