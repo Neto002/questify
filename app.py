@@ -225,6 +225,23 @@ def add_task():
     createTask(nome, xp, pontos, usuario, prazo, projeto)
     return redirect("/")
 
+@app.route("/edit_task", methods=["POST"])
+def edit_task():
+    nome = request.form.get("nome")
+    xp = request.form.get("xp")
+    pontos = request.form.get("pontos")
+    usuario = request.form.get("usuario")
+    projeto = request.form.get("projeto")
+    taskId = request.form.get("id")
+    task = Tarefas.query.filter_by(id=int(taskId)).first()
+    task.nome = nome
+    task.xp = int(xp)
+    task.pontos = int(pontos)
+    task.usuario = int(usuario)
+    task.projeto = int(projeto)
+    db.session.commit()
+    return redirect("/")
+
 @app.route("/add_reward", methods=["POST"])
 def add_reward():
     nome = request.form.get("nome")

@@ -83,6 +83,7 @@ function editTask(taskName, taskXp, taskPontos, taskUser, taskID, taskProject) {
     document.getElementById('editPoints').value = taskPontos;
     document.getElementById('editResponsible').value = taskUser;
     document.getElementById('editTaskProject').value = taskProject;
+    document.getElementById('editTaskId').value = taskID;
     //document.getElementById('deleteTaskButton').href = "/delete_task/"+taskID;
 
 
